@@ -4,6 +4,7 @@ import { aspectRatioOptions, defaultCropArea, previewTabs } from "./constants";
 import Editor from "./components/Editor";
 import PreviewCanvas from "./components/Preview/PreviewCanvas";
 import GeneratePreviewController from "./components/Editor/GeneratePreviewController";
+import ResultVideo from "./components/ResultVideo";
 
 const App = () => {
   const [cropArea, setCropArea] = useState(defaultCropArea);
@@ -58,7 +59,9 @@ const App = () => {
           options={previewTabs}
         />
       </div>
-      {activeTab === previewTabs[0] && <></>}
+      {activeTab === previewTabs[0] && (
+        <ResultVideo videoSettings={videoSettings} />
+      )}
 
       {activeTab === previewTabs[1] && (
         <div>

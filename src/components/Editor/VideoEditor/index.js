@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { VideoEditorContainer } from "./VideoEditor.style";
+import { videoUrl } from "../../../constants";
 
 export default function VideoEditor(props) {
   const {
@@ -66,10 +67,7 @@ export default function VideoEditor(props) {
       onMouseUp={handleMouseUp}
       $cropArea={cropArea}
     >
-      <video
-        ref={videoRef}
-        src="https://www.w3schools.com/html/mov_bbb.mp4"
-      ></video>
+      <video ref={videoRef} src={videoUrl}></video>
       {isCropOverlayPresent && (
         <div
           className="crop-overlay"

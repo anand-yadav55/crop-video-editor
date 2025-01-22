@@ -19,6 +19,7 @@ export const VideoEditorContainer = styled.div`
     cursor: move;
     max-width: 100%;
     border-style: dashed;
+    background: rgba(255, 255, 255, 0.5);
     max-height: 100%;
     ${({ $cropArea }) => `
         top: calc(${$cropArea.y}px - 1px);
