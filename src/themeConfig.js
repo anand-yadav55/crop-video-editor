@@ -17,7 +17,9 @@ export const antdThemeConfig = {
     Select: {
       activeBorderColor: "transparent",
       hoverBorderColor: "transparent",
-      optionActiveBg: "#FFFFFF50",
+      optionActiveBg: "#37393f",
+      optionSelectedBg: "#000000c3",
+      optionSelectedColor: "#000000",
       selectorBg: "#FFFFFF50",
       activeOutlineColor: "#FFFFFF50",
     },

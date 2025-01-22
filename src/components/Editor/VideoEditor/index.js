@@ -15,7 +15,7 @@ export default function VideoEditor(props) {
 
   const handleMouseMove = (e) => {
     if (!isDragging.current) return;
-    const { clientX, clientY } = e;
+    const { clientX } = e;
     const cropRect = cropRef.current.getBoundingClientRect();
     const videoRect = videoRef.current.getBoundingClientRect();
 
@@ -28,13 +28,6 @@ export default function VideoEditor(props) {
       Math.min(
         clientX - videoRect.left - cropRect.width / 2,
         videoRect.width - cropRect.width - borderWidth
-      )
-    );
-    const newY = Math.max(
-      borderWidth,
-      Math.min(
-        clientY - videoRect.top - cropRect.height / 2,
-        videoRect.height - cropRect.height - borderWidth
       )
     );
 

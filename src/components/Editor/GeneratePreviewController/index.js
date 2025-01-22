@@ -19,10 +19,21 @@ export default function GeneratePreviewController(props) {
       coordinates: [cropArea.x, cropArea.y, cropArea.width, cropArea.height],
       volume: video.volume,
       playbackRate: video.playbackRate,
-      previewActive,
-      previewTimeStamp: video.currentTime,
     };
   };
+
+  const handleGeneratePreview = () => {
+    const element = document.createElement("a");
+    const file = new Blob([JSON.stringify(videoSettings)], {
+      type: "application/json",
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = "videoSettings.json";
+    document.body.appendChild(element);
+    element.click();
+    setVideoSettings([null, null]);
+  };
+
   useEffect(() => {
     setIsGenerateDisabled(!!videoSettings[0] && !!videoSettings[1]);
   }, [videoSettings]);
@@ -40,7 +51,10 @@ export default function GeneratePreviewController(props) {
           <Button disabled={!!videoSettings[1]} onClick={handleStopPreview}>
             Remove Cropper
           </Button>
-          <Button disabled={!isGenerateDisabled} onClick={handleStopPreview}>
+          <Button
+            disabled={!isGenerateDisabled}
+            onClick={handleGeneratePreview}
+          >
             Generate Preview
           </Button>
         </div>

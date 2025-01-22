@@ -28,6 +28,9 @@ const PreviewCanvas = ({ videoSettings, videoRef, currentCoordinates }) => {
 
     if (video) {
       video.addEventListener("timeupdate", updateCanvas);
+      setTimeout(() => {
+        drawCroppedFrame();
+      }, 0);
     }
 
     return () => {
