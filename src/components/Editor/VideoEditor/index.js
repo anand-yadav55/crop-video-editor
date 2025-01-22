@@ -1,0 +1,80 @@
+import React, { useRef } from "react";
+import { VideoEditorContainer } from "./VideoEditor.style";
+
+export default function VideoEditor(props) {
+  const { videoRef, cropRef, cropArea, setCropArea, setCurrentCoordinates } =
+    props;
+  const isDragging = useRef(false);
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+  };
+  const handleMouseDown = (e) => {
+    isDragging.current = true;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging.current) return;
+    const { clientX, clientY } = e;
+    const cropRect = cropRef.current.getBoundingClientRect();
+    const videoRect = videoRef.current.getBoundingClientRect();
+
+    // Define border width
+    const borderWidth = 1;
+
+    // Adjust calculations to account for border width
+    const newX = Math.max(
+      borderWidth,
+      Math.min(
+        clientX - videoRect.left - cropRect.width / 2,
+        videoRect.width - cropRect.width - borderWidth
+      )
+    );
+    const newY = Math.max(
+      borderWidth,
+      Math.min(
+        clientY - videoRect.top - cropRect.height / 2,
+        videoRect.height - cropRect.height - borderWidth
+      )
+    );
+
+    setCropArea((prev) => ({
+      ...prev,
+      x: newX,
+      y: 0,
+    }));
+
+    // Calculate scale factors
+    const realVideoWidth = videoRef.current.videoWidth;
+    const realVideoHeight = videoRef.current.videoHeight;
+    const scaleX = realVideoWidth / videoRect.width;
+    const scaleY = realVideoHeight / videoRect.height;
+
+    // Scale width/height of the crop box
+    const scaledWidth = cropRect.width * scaleX;
+    const scaledHeight = cropRect.height * scaleY;
+
+    // Scale x/y positions
+    const scaledX = newX * scaleX;
+
+    setCurrentCoordinates([scaledX, 0, scaledWidth, scaledHeight]);
+  };
+
+  return (
+    <VideoEditorContainer
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      $cropArea={cropArea}
+    >
+      <video
+        ref={videoRef}
+        src="https://www.w3schools.com/html/mov_bbb.mp4"
+      ></video>
+      <div
+        className="crop-overlay"
+        ref={cropRef}
+        onMouseDown={handleMouseDown}
+      ></div>
+    </VideoEditorContainer>
+  );
+}
