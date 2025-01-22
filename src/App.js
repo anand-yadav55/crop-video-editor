@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { aspectRatioOptions, defaultCropArea } from "./constants";
+import { Segmented } from "antd";
+import { aspectRatioOptions, defaultCropArea, previewTabs } from "./constants";
 import Editor from "./components/Editor";
 import PreviewCanvas from "./components/Preview/PreviewCanvas";
 import GeneratePreviewController from "./components/Editor/GeneratePreviewController";
@@ -8,6 +9,7 @@ const App = () => {
   const [cropArea, setCropArea] = useState(defaultCropArea);
   const [videoSettings, setVideoSettings] = useState([null, null]);
   const [currentCoordinates, setCurrentCoordinates] = useState([]);
+  const [activeTab, setActiveTab] = useState(previewTabs[1]);
 
   const videoRef = useRef(null);
   const cropRef = useRef(null);
@@ -46,33 +48,49 @@ const App = () => {
 
   return (
     <div className="app">
-      <div className="app-container">
-        <Editor
-          videoRef={videoRef}
-          cropRef={cropRef}
-          cropArea={cropArea}
-          setCropArea={setCropArea}
-          setCurrentCoordinates={setCurrentCoordinates}
-          aspectRatioOptions={aspectRatioOptions}
-          currentTime={currentTime}
-          setCurrentTime={setCurrentTime}
-          duration={duration}
-          videoSettings={videoSettings}
-          setVideoSettings={setVideoSettings}
-        />
-
-        <PreviewCanvas
-          videoRef={videoRef}
-          currentCoordinates={currentCoordinates}
-          videoSettings={videoSettings}
+      <div className="tab-container flex center pb-0">
+        <Segmented
+          value={activeTab}
+          style={{
+            marginBottom: 8,
+          }}
+          onChange={setActiveTab}
+          options={previewTabs}
         />
       </div>
-      <GeneratePreviewController
-        videoSettings={videoSettings}
-        setVideoSettings={setVideoSettings}
-        videoRef={videoRef}
-        cropArea={cropArea}
-      />
+      {activeTab === previewTabs[0] && <></>}
+
+      {activeTab === previewTabs[1] && (
+        <div>
+          <div className="app-container flex pb-100">
+            <Editor
+              videoRef={videoRef}
+              cropRef={cropRef}
+              cropArea={cropArea}
+              setCropArea={setCropArea}
+              setCurrentCoordinates={setCurrentCoordinates}
+              aspectRatioOptions={aspectRatioOptions}
+              currentTime={currentTime}
+              setCurrentTime={setCurrentTime}
+              duration={duration}
+              videoSettings={videoSettings}
+              setVideoSettings={setVideoSettings}
+            />
+
+            <PreviewCanvas
+              videoRef={videoRef}
+              currentCoordinates={currentCoordinates}
+              videoSettings={videoSettings}
+            />
+          </div>
+          <GeneratePreviewController
+            videoSettings={videoSettings}
+            setVideoSettings={setVideoSettings}
+            videoRef={videoRef}
+            cropArea={cropArea}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -2,9 +2,16 @@ import React, { useRef } from "react";
 import { VideoEditorContainer } from "./VideoEditor.style";
 
 export default function VideoEditor(props) {
-  const { videoRef, cropRef, cropArea, setCropArea, setCurrentCoordinates } =
-    props;
+  const {
+    videoRef,
+    cropRef,
+    cropArea,
+    setCropArea,
+    setCurrentCoordinates,
+    videoSettings,
+  } = props;
   const isDragging = useRef(false);
+  const isCropOverlayPresent = !!videoSettings[0];
 
   const handleMouseUp = () => {
     isDragging.current = false;
@@ -63,11 +70,13 @@ export default function VideoEditor(props) {
         ref={videoRef}
         src="https://www.w3schools.com/html/mov_bbb.mp4"
       ></video>
-      <div
-        className="crop-overlay"
-        ref={cropRef}
-        onMouseDown={handleMouseDown}
-      ></div>
+      {isCropOverlayPresent && (
+        <div
+          className="crop-overlay"
+          ref={cropRef}
+          onMouseDown={handleMouseDown}
+        ></div>
+      )}
     </VideoEditorContainer>
   );
 }

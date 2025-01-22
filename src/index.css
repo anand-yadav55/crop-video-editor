@@ -22,9 +22,24 @@ code {
   border-radius: 10px;
   overflow: hidden;
 }
-.app-container {
+.app-container,
+.tab-container {
   background-color: #37393f;
-  padding: 18px 20px 100px;
+  padding: 18px 20px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pb-0 {
+  padding-bottom: 0px;
+}
+.pb-100 {
+  padding-bottom: 100px;
+}
+.flex {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;

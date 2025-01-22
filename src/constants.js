@@ -22,3 +22,5 @@ export const playbackSpeedOptions = [
   { label: "1.5x", value: 1.5 },
   { label: "2x", value: 2 },
 ];
+
+export const previewTabs = ["Preview Session", "Generate Session"];

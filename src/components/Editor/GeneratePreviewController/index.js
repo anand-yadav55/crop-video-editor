@@ -66,12 +66,12 @@ export default function GeneratePreviewController(props) {
           Cancel
         </Button>
       </div>
-      <div style={{ marginTop: "20px" }}>
+      {/* <div style={{ marginTop: "20px" }}>
         <h3>Saved Settings</h3>
         <pre style={{ padding: "10px" }}>
           {JSON.stringify(videoSettings, null, 2)}
         </pre>
-      </div>
+      </div> */}
     </div>
   );
 }

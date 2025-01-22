@@ -1,3 +1,5 @@
+import { Segmented } from "antd";
+
 export const antdThemeConfig = {
   token: {
     Slider: {
@@ -32,6 +34,14 @@ export const antdThemeConfig = {
       defaultHoverBg: "#7C36D680",
       defaultHoverColor: "#FFFFFF",
       fontWeight: 500,
+    },
+    Segmented: {
+      itemColor: "#FFFFFF",
+      itemActiveBg: "#37393F",
+      itemHoverColor: "#FFFFFF",
+      itemSelectedBg: "#37393F",
+      itemSelectedColor: "#FFFFFF",
+      trackBg: "#45474E",
     },
   },
 };
