@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Button from "../../commonComponent/Button";
 
 export default function GeneratePreviewController(props) {
   const { videoSettings, setVideoSettings, videoRef, cropArea } = props;
+  const [isGenerateDisabled, setIsGenerateDisabled] = useState(true);
   const handleStartPreview = () => {
     setVideoSettings((prev) => [buildPreviewSetting(true), prev[1]]);
   };
@@ -21,16 +23,38 @@ export default function GeneratePreviewController(props) {
       previewTimeStamp: video.currentTime,
     };
   };
+  useEffect(() => {
+    setIsGenerateDisabled(!!videoSettings[0] && !!videoSettings[1]);
+  }, [videoSettings]);
 
   return (
-    <div>
-      <div>
-        <button onClick={handleStartPreview}>Start Preview</button>
-        <button onClick={handleStopPreview}>Stop Preview</button>
+    <div className="preview-controller">
+      <div className="row space-between">
+        <div className="row">
+          <Button
+            disabled={!!videoSettings[0] || isGenerateDisabled}
+            onClick={handleStartPreview}
+          >
+            Start Cropper
+          </Button>
+          <Button disabled={!!videoSettings[1]} onClick={handleStopPreview}>
+            Remove Cropper
+          </Button>
+          <Button disabled={!isGenerateDisabled} onClick={handleStopPreview}>
+            Generate Preview
+          </Button>
+        </div>
+        <Button
+          color="default"
+          variant="filled"
+          style={{ color: "#fff", backgroundColor: "#FFFFFF40" }}
+        >
+          Cancel
+        </Button>
       </div>
       <div style={{ marginTop: "20px" }}>
         <h3>Saved Settings</h3>
-        <pre style={{ backgroundColor: "#f0f0f0", padding: "10px" }}>
+        <pre style={{ padding: "10px" }}>
           {JSON.stringify(videoSettings, null, 2)}
         </pre>
       </div>

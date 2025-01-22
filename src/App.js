@@ -6,7 +6,7 @@ import GeneratePreviewController from "./components/Editor/GeneratePreviewContro
 
 const App = () => {
   const [cropArea, setCropArea] = useState(defaultCropArea);
-  const [videoSettings, setVideoSettings] = useState([]);
+  const [videoSettings, setVideoSettings] = useState([null, null]);
   const [currentCoordinates, setCurrentCoordinates] = useState([]);
 
   const videoRef = useRef(null);
@@ -45,8 +45,8 @@ const App = () => {
   }, [cropArea]);
 
   return (
-    <>
-      <div className="App">
+    <div className="app">
+      <div className="app-container">
         <Editor
           videoRef={videoRef}
           cropRef={cropRef}
@@ -64,6 +64,7 @@ const App = () => {
         <PreviewCanvas
           videoRef={videoRef}
           currentCoordinates={currentCoordinates}
+          videoSettings={videoSettings}
         />
       </div>
       <GeneratePreviewController
@@ -72,7 +73,7 @@ const App = () => {
         videoRef={videoRef}
         cropArea={cropArea}
       />
-    </>
+    </div>
   );
 };
 

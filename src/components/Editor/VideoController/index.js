@@ -119,7 +119,7 @@ export default function VideoController(props) {
           onChange={(e) => {
             if (videoRef.current) videoRef.current.playbackRate = parseFloat(e);
           }}
-          defaultValue={videoRef?.current?.playbackRate}
+          defaultValue={videoRef?.current?.playbackRate || 1}
           options={playbackSpeedOptions}
           prefix={<span className="text">Playback Speed</span>}
         />

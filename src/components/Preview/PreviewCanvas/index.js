@@ -1,12 +1,13 @@
 import ZeroState from "../../ZeroState";
 import { PreviewCanvasWrapper } from "./PreviewCanvasWrapper.style";
 
-const { useEffect, useRef } = require("react");
+const { useEffect, useRef, useState, useCallback } = require("react");
 
-const PreviewCanvas = ({ videoRef, currentCoordinates }) => {
+const PreviewCanvas = ({ videoSettings, videoRef, currentCoordinates }) => {
   const canvasRef = useRef(null);
-  const isZeroState = false;
-  const drawCroppedFrame = () => {
+  const [isZeroState, setIsZeroState] = useState(!!!videoSettings[0]);
+
+  const drawCroppedFrame = useCallback(() => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
@@ -16,10 +17,11 @@ const PreviewCanvas = ({ videoRef, currentCoordinates }) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(video, x1, y1, width, height, 0, 0, width, height);
     }
-  };
+  }, [videoRef, canvasRef, currentCoordinates]);
 
   useEffect(() => {
     const video = videoRef.current;
+    setIsZeroState(!!!videoSettings[0]);
     const updateCanvas = () => {
       drawCroppedFrame();
     };
@@ -33,7 +35,7 @@ const PreviewCanvas = ({ videoRef, currentCoordinates }) => {
         video.removeEventListener("timeupdate", updateCanvas);
       }
     };
-  }, [currentCoordinates]);
+  }, [currentCoordinates, videoSettings, videoRef, drawCroppedFrame]);
 
   return (
     <PreviewCanvasWrapper>
@@ -42,7 +44,7 @@ const PreviewCanvas = ({ videoRef, currentCoordinates }) => {
         {isZeroState ? (
           <ZeroState />
         ) : (
-          <div class="canvas-container" style={{ marginTop: "20px" }}>
+          <div className="canvas-container" style={{ marginTop: "20px" }}>
             <canvas
               ref={canvasRef}
               width={currentCoordinates[2]}

@@ -9,17 +9,22 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #ffffff;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-.App {
-  padding: 24px 36px;
+.app {
+  margin: 24px 36px;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.app-container {
   background-color: #37393f;
-  color: #ffffff;
+  padding: 18px 20px 100px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -39,4 +44,10 @@ code {
 }
 .space-between {
   justify-content: space-between;
+}
+
+.preview-controller {
+  background-color: #37393f;
+  border-top: 1px solid #ffffff50;
+  padding: 20px;
 }
