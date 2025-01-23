@@ -28,7 +28,7 @@ export default function GeneratePreviewController(props) {
     element.download = "videoSettings.json";
     document.body.appendChild(element);
     element.click();
-    setVideoSettings([null, null]);
+    // setVideoSettings([null, null]);
   };
 
   return (
