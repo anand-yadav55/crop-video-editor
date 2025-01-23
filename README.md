@@ -1,5 +1,5 @@
 ## DEMO VIDEO:
-[https://www.loom.com/share/d614b5c23f234dbfa778b35e918f0631?sid=9329f4f5-3345-4c75-b5db-79935e471f72](Demo Video: https://www.loom.com/share/d614b5c23f234dbfa778b35e918f0631?sid=9329f4f5-3345-4c75-b5db-79935e471f72)
+[https://www.loom.com/share/d614b5c23f234dbfa778b35e918f0631?sid=9329f4f5-3345-4c75-b5db-79935e471f72]( https://www.loom.com/share/d614b5c23f234dbfa778b35e918f0631?sid=9329f4f5-3345-4c75-b5db-79935e471f72)
 
 ## DEPLOYMENT LINK:
 [https://crop-video-editor.vercel.app/](https://crop-video-editor.vercel.app/)
