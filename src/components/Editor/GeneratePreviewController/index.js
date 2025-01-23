@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Button from "../../commonComponent/Button";
+import { buildPreviewSetting } from "../../../utils";
 
 export default function GeneratePreviewController(props) {
-  const { videoSettings, setVideoSettings, videoRef, cropArea } = props;
-  const [isGenerateDisabled, setIsGenerateDisabled] = useState(true);
-  const handleStartPreview = () => {
-    setVideoSettings((prev) => [buildPreviewSetting(true), prev[1]]);
-  };
+  const {
+    videoSettings,
+    setVideoSettings,
+    videoRef,
+    cropArea,
+    setIsRecordable,
+    isRecordable,
+  } = props;
 
   const handleStopPreview = () => {
-    setVideoSettings((prev) => [prev[0], buildPreviewSetting(false)]);
-  };
-
-  const buildPreviewSetting = (previewActive) => {
-    const video = videoRef.current;
-    return {
-      timeStamp: video.currentTime,
-      coordinates: [cropArea.x, cropArea.y, cropArea.width, cropArea.height],
-      volume: video.volume,
-      playbackRate: video.playbackRate,
-    };
+    setVideoSettings((prev) => [
+      prev[0],
+      buildPreviewSetting(videoRef, cropArea),
+    ]);
   };
 
   const handleGeneratePreview = () => {
@@ -34,27 +31,22 @@ export default function GeneratePreviewController(props) {
     setVideoSettings([null, null]);
   };
 
-  useEffect(() => {
-    setIsGenerateDisabled(!!videoSettings[0] && !!videoSettings[1]);
-  }, [videoSettings]);
-
   return (
     <div className="preview-controller">
       <div className="row space-between">
         <div className="row">
           <Button
-            disabled={!!videoSettings[0] || isGenerateDisabled}
-            onClick={handleStartPreview}
+            disabled={!!videoSettings[0] || isRecordable}
+            onClick={() => {
+              setIsRecordable(true);
+            }}
           >
             Start Cropper
           </Button>
           <Button disabled={!!videoSettings[1]} onClick={handleStopPreview}>
             Remove Cropper
           </Button>
-          <Button
-            disabled={!isGenerateDisabled}
-            onClick={handleGeneratePreview}
-          >
+          <Button disabled={!isRecordable} onClick={handleGeneratePreview}>
             Generate Preview
           </Button>
         </div>
@@ -66,12 +58,17 @@ export default function GeneratePreviewController(props) {
           Cancel
         </Button>
       </div>
-      {/* <div style={{ marginTop: "20px" }}>
-        <h3>Saved Settings</h3>
-        <pre style={{ padding: "10px" }}>
-          {JSON.stringify(videoSettings, null, 2)}
-        </pre>
-      </div> */}
+      {videoSettings[0] && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>Crop data</h3>
+          <span className="inactive">
+            Click "Generate Preview" to download data
+          </span>
+          <pre style={{ padding: "10px" }}>
+            {JSON.stringify(videoSettings, null, 2)}
+          </pre>
+        </div>
+      )}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import Editor from "./components/Editor";
 import PreviewCanvas from "./components/Preview/PreviewCanvas";
 import GeneratePreviewController from "./components/Editor/GeneratePreviewController";
 import ResultVideo from "./components/ResultVideo";
+import { buildPreviewSetting, getScaledCoordinates } from "./utils";
 
 const App = () => {
   const [cropArea, setCropArea] = useState(defaultCropArea);
@@ -16,6 +17,14 @@ const App = () => {
   const cropRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isRecordable, setIsRecordable] = useState(false);
+  const handleStartPreview = () => {
+    if (isRecordable && videoSettings[0] == null)
+      setVideoSettings((prev) => [
+        buildPreviewSetting(videoRef, cropArea),
+        prev[1],
+      ]);
+  };
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -24,15 +33,8 @@ const App = () => {
     const handleLoadedMetadata = () => {
       setDuration(vid.duration);
       // Initialize currentCoordinates based on initial cropArea
-      const realVideoWidth = vid.videoWidth;
-      const realVideoHeight = vid.videoHeight;
-      const scaleX = realVideoWidth / 640;
-      const scaleY = realVideoHeight / 360;
-
-      const scaledWidth = cropArea.width * scaleX;
-      const scaledHeight = cropArea.height * scaleY;
-      const scaledX = cropArea.x * scaleX;
-      const scaledY = cropArea.y * scaleY;
+      const [scaledHeight, scaledWidth, scaledX, scaledY] =
+        getScaledCoordinates(cropArea, vid);
 
       setCurrentCoordinates([scaledX, scaledY, scaledWidth, scaledHeight]);
     };
@@ -45,7 +47,23 @@ const App = () => {
       vid.removeEventListener("loadedmetadata", handleLoadedMetadata);
       vid.removeEventListener("timeupdate", handleTimeUpdate);
     };
-  }, [cropArea]);
+  }, [cropArea, activeTab]);
+
+  const editorProps = {
+    videoRef,
+    cropRef,
+    cropArea,
+    setCropArea,
+    setCurrentCoordinates,
+    currentTime,
+    aspectRatioOptions,
+    duration,
+    setCurrentTime,
+    videoSettings,
+    setVideoSettings,
+    handleStartPreview,
+    isRecordable,
+  };
 
   return (
     <div className="app">
@@ -59,26 +77,12 @@ const App = () => {
           options={previewTabs}
         />
       </div>
-      {activeTab === previewTabs[0] && (
-        <ResultVideo videoSettings={videoSettings} />
-      )}
+      {activeTab === previewTabs[0] && <ResultVideo {...editorProps} />}
 
       {activeTab === previewTabs[1] && (
         <div>
           <div className="app-container flex pb-100">
-            <Editor
-              videoRef={videoRef}
-              cropRef={cropRef}
-              cropArea={cropArea}
-              setCropArea={setCropArea}
-              setCurrentCoordinates={setCurrentCoordinates}
-              aspectRatioOptions={aspectRatioOptions}
-              currentTime={currentTime}
-              setCurrentTime={setCurrentTime}
-              duration={duration}
-              videoSettings={videoSettings}
-              setVideoSettings={setVideoSettings}
-            />
+            <Editor {...editorProps} />
 
             <PreviewCanvas
               videoRef={videoRef}
@@ -91,6 +95,8 @@ const App = () => {
             setVideoSettings={setVideoSettings}
             videoRef={videoRef}
             cropArea={cropArea}
+            setIsRecordable={setIsRecordable}
+            isRecordable={isRecordable}
           />
         </div>
       )}

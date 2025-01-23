@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { VideoEditorContainer } from "./VideoEditor.style";
 import { videoUrl } from "../../../constants";
+import { getScaledCoordinates } from "../../../utils";
 
 export default function VideoEditor(props) {
   const {
@@ -9,10 +10,11 @@ export default function VideoEditor(props) {
     cropArea,
     setCropArea,
     setCurrentCoordinates,
-    videoSettings,
+    currentTime,
+    isRecordable,
   } = props;
   const isDragging = useRef(false);
-  const isCropOverlayPresent = !!videoSettings[0];
+  const isCropOverlayPresent = isRecordable;
 
   const handleMouseUp = () => {
     isDragging.current = false;
@@ -45,21 +47,19 @@ export default function VideoEditor(props) {
       y: 0,
     }));
 
-    // Calculate scale factors
-    const realVideoWidth = videoRef.current.videoWidth;
-    const realVideoHeight = videoRef.current.videoHeight;
-    const scaleX = realVideoWidth / videoRect.width;
-    const scaleY = realVideoHeight / videoRect.height;
-
-    // Scale width/height of the crop box
-    const scaledWidth = cropRect.width * scaleX;
-    const scaledHeight = cropRect.height * scaleY;
-
-    // Scale x/y positions
-    const scaledX = newX * scaleX;
+    const [scaledHeight, scaledWidth, scaledX, scaledY] = getScaledCoordinates(
+      cropArea,
+      videoRef.current
+    );
 
     setCurrentCoordinates([scaledX, 0, scaledWidth, scaledHeight]);
   };
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = currentTime;
+    }
+  }, []);
 
   return (
     <VideoEditorContainer

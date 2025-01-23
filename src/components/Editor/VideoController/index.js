@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { defaultAspectRatio, playbackSpeedOptions } from "../../../constants";
-import PlayIcon from "../../../assets/Icons/PlayIcon";
-import PauseIcon from "../../../assets/Icons/PauseIcon";
 import SoundIcon from "../../../assets/Icons/SoundIcon";
 import { VideoControllerWrapper } from "./VideoController.style";
 import Slider from "../../commonComponent/Slider";
 import Select from "../../commonComponent/Select";
+import VideoTimeStampContoller from "./VideoTimeStampContoller";
 
 export default function VideoController(props) {
   const {
@@ -16,6 +15,7 @@ export default function VideoController(props) {
     duration,
     setCropArea,
     setCurrentCoordinates,
+    handleStartPreview,
   } = props;
   const [aspectRatio, setAspectRatio] = useState(defaultAspectRatio); // Default aspect ratio 16:9
 
@@ -58,34 +58,29 @@ export default function VideoController(props) {
   };
   const handleVideoPlayback = () => {
     if (videoRef.current?.paused) {
+      handleStartPreview();
       videoRef.current.play();
     } else {
       videoRef.current.pause();
     }
   };
+  const handleTimeChange = (e) => {
+    const newTime = parseFloat(e);
+    videoRef.current.currentTime = newTime;
+    setCurrentTime(newTime);
+  };
 
+  const sliderProps = {
+    handleVideoPlayback,
+    videoRef,
+    currentTime,
+    duration,
+    handleTimeChange,
+    handleStartPreview,
+  };
   return (
     <VideoControllerWrapper>
-      <div className="row">
-        <div onClick={handleVideoPlayback}>
-          {videoRef.current?.paused ? (
-            <PlayIcon color="#FFF" height="20px" width="20px" />
-          ) : (
-            <PauseIcon color="#FFF" height="20px" width="20px" />
-          )}
-        </div>
-        <Slider
-          min={0}
-          max={duration}
-          value={currentTime}
-          step={0.01}
-          onChange={(e) => {
-            const newTime = parseFloat(e);
-            videoRef.current.currentTime = newTime;
-            setCurrentTime(newTime);
-          }}
-        />
-      </div>
+      <VideoTimeStampContoller {...sliderProps} />
       <div className="row space-between">
         <div className="row">
           <span>

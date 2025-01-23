@@ -1,10 +1,11 @@
 export const videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4";
 export const defaultAspectRatio = 16 / 9;
+const cropAspectRatio = 3 / 4;
 export const defaultCropArea = {
   x: 0,
   y: 0,
-  width: 640,
-  height: 640 / defaultAspectRatio,
+  width: 360 * cropAspectRatio,
+  height: 360,
 };
 
 export const aspectRatioOptions = [
